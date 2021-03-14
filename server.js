@@ -63,18 +63,22 @@ const server = http.createServer((req, res) => { //Создание сервер
                     fs.readFile('header.html', function(err, data_header) { // Считывание файла с шапкой и запуск функции которая
                         data = data.toString().replace("{{header}}", data_header.toString()); // Перезаписывает переменную 'data' преобразовывая кодировку в строку и звменяет {{header}} на содержимое 'header.html'
                         console.log(data_header.toString()) // Логирование переменной с данными из шапки
+
+                        fs.readFile('main.html', function(err, data_main) { // Считывание файла с основой и запуск функции которая
+                            data = data.toString().replace("{{main}}", data_main.toString()); // Перезаписывает переменную 'data' преобразовывая кодировку в строку и звменяет {{main}} на содержимое 'header.html'
+                            console.log(data_main.toString()) // Логирование переменной с данными из основы
+
+                            fs.readFile('footer.html', function(err, data_footer) { // Считывание файла с подвалом и запуск функции которая
+                                data = data.toString().replace("{{footer}}", data_footer.toString()); // Перезаписывает переменную 'data' преобразовывая кодировку в строку и звменяет {{footer}} на содержимое 'header.html'
+                                res.write(data) // Запись содержимого переменной 'data' (в которой содержиться шапка) на сайт.
+                                console.log(data_footer.toString()) // Логирование переменной с данными из подвала
+                                console.log('_________________________________________________________________')
+                                res.end() // Окончание отправки данных.
+                            })
+                        })
                     })
-                    fs.readFile('main.html', function(err, data_main) { // Считывание файла с основой и запуск функции которая
-                        data = data.toString().replace("{{main}}", data_main.toString()); // Перезаписывает переменную 'data' преобразовывая кодировку в строку и звменяет {{main}} на содержимое 'header.html'
-                        console.log(data_main.toString()) // Логирование переменной с данными из основы
-                    })
-                    fs.readFile('footer.html', function(err, data_footer) { // Считывание файла с подвалом и запуск функции которая
-                        data = data.toString().replace("{{footer}}", data_footer.toString()); // Перезаписывает переменную 'data' преобразовывая кодировку в строку и звменяет {{footer}} на содержимое 'header.html'
-                        res.write(data) // Запись содержимого переменной 'data' (в которой содержиться шапка) на сайт.
-                        console.log(data_footer.toString()) // Логирование переменной с данными из подвала
-                        console.log('_________________________________________________________________')
-                        res.end() // Окончание отправки данных.
-                    })
+
+
 
                 } else { // Если ничего не сработало, то
                     fs.readFile('404.html', function(err, data) { // Считывается файл ошибки 404
@@ -87,9 +91,6 @@ const server = http.createServer((req, res) => { //Создание сервер
         }
     }
 });
-
-
-
 
 server.listen(port, hostname, () => { // Прослушка сервера
     console.log('Server is running!') // Лог для обозначения запуска сервера
